@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Control Life — desligue a cobrança, ligue o descanso</title>
+<meta name="theme-color" content="#f7f4eb">
+<meta name="description" content="Control Life ajuda você a encerrar o expediente e descansar sem culpa.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -152,6 +155,76 @@
   @media (prefers-reduced-motion: reduce){
     .switch, .switch .knob, .page{ transition: none !important; animation: none !important; }
   }
+
+  /* Identidade visual */
+  :root{
+    --bg:#f7f4eb; --bg-soft:#fffdf8; --bg-soft2:#edf0e5;
+    --ink:#1e3831; --ink-dim:#60736b; --line:rgba(30,56,49,.14);
+    --sage:#456f5d; --gold:#c7974b;
+  }
+  body{ background:radial-gradient(circle at 86% 18%,#e7eadb 0,transparent 27%),var(--bg); overflow-x:clip; }
+  .wrap{ max-width:1080px; padding:0 clamp(20px,5vw,64px); }
+  header{ padding-top:10px; padding-bottom:8px; background:rgba(247,244,235,.92); backdrop-filter:blur(18px); box-shadow:0 8px 28px rgba(30,56,49,.04); }
+  header .wrap{ gap:7px; }
+  .logo{ font-family:var(--font-body); font-weight:600; letter-spacing:-.04em; font-size:1.18rem; gap:11px; }
+  .logo b{ color:var(--ink); font-weight:600; }
+  .logo-mark{ width:42px; height:42px; border-radius:12px; }
+  .logo-lg .logo-mark{ width:48px; height:48px; }
+  nav{ gap:7px; }
+  nav button{ padding:9px 14px; font-weight:500; transition:background .2s,color .2s; }
+  nav button:hover,nav button[aria-current="page"]{ background:#e7eadf; color:var(--ink); }
+  .cta-small,.cta{ background:var(--ink); color:#fffdf8; box-shadow:0 10px 24px rgba(30,56,49,.15); transition:transform .2s,box-shadow .2s,background .2s; }
+  .cta-small:hover,.cta:hover{ background:#315c4b; transform:translateY(-2px); box-shadow:0 14px 28px rgba(30,56,49,.2); }
+  .cta.ghost{ border-color:rgba(30,56,49,.24); box-shadow:none; }
+  .cta.ghost:hover{ background:#e7eadf; }
+  .hero{ position:relative; padding:clamp(55px,8vw,100px) 0 48px; isolation:isolate; }
+  .hero:before,.hero:after{ content:""; position:absolute; border:1px solid rgba(69,111,93,.13); border-radius:50%; z-index:-1; }
+  .hero:before{ width:340px; height:340px; left:-120px; top:24px; }
+  .hero:after{ width:210px; height:210px; right:-40px; bottom:5px; }
+  .kicker{ display:inline-flex; align-items:center; gap:9px; margin-bottom:22px; padding:8px 15px; border:1px solid rgba(69,111,93,.22); border-radius:999px; color:var(--sage); background:#eff1e8; font-size:.78rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
+  .kicker:before{ content:""; width:7px; height:7px; background:var(--gold); border-radius:50%; }
+  h1,h2{ color:var(--ink); letter-spacing:-.045em; }
+  h1{ font-size:clamp(3rem,7.5vw,5.8rem); line-height:1.04; max-width:13ch; margin-bottom:24px; }
+  h2{ font-size:clamp(2rem,4vw,3rem); line-height:1.14; }
+  .lede{ font-size:clamp(1rem,1.7vw,1.16rem); line-height:1.7; max-width:55ch; }
+  .switch-demo{ width:min(100%,530px); margin:42px auto 34px; padding:27px 22px 23px; border:1px solid var(--line); border-radius:26px; background:var(--bg-soft); box-shadow:0 18px 55px rgba(30,56,49,.07); }
+  .switch{ background:#dce2d7; border-color:#c7d1c2; }
+  button.switch{ display:block; padding:0; appearance:none; font:inherit; }
+  .switch .knob{ background:#fffdf8; box-shadow:0 2px 8px rgba(30,56,49,.15); }
+  .switch.on{ background:#b9d3b9; }
+  .switch.on .knob{ background:#fffdf8; }
+  .switch-label{ color:var(--ink-dim); }
+  .quote-block{ background:#e6ebdf; border:1px solid rgba(69,111,93,.12); border-radius:28px; padding:48px 24px; }
+  .quote-block p{ color:var(--ink); font-size:clamp(1.6rem,3vw,2.35rem); max-width:25ch; }
+  section.block{ padding:clamp(56px,8vw,88px) 0; }
+  .problem-box,.card,.script{ background:var(--bg-soft); border:1px solid var(--line); box-shadow:0 12px 32px rgba(30,56,49,.04); }
+  .problem-box{ border-left:4px solid var(--gold); border-radius:18px; padding:28px; }
+  .cards{ gap:18px; }
+  .card{ border-radius:20px; padding:28px; transition:transform .2s,box-shadow .2s; }
+  .card:hover{ transform:translateY(-4px); box-shadow:0 18px 36px rgba(30,56,49,.1); }
+  .card h3,.steps h3{ color:var(--ink); font-size:1.06rem; }
+  .steps{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+  .steps li{ min-height:150px; padding:26px; border:1px solid var(--line); border-radius:20px; background:var(--bg-soft); }
+  .steps .n{ color:var(--gold); font-size:1.45rem; width:38px; }
+  .script{ border-radius:20px; padding:30px; }
+  .script .line{ padding-bottom:17px; border-bottom:1px solid var(--line); }
+  .script .line:last-child{ border:0; padding-bottom:0; margin-bottom:0; }
+  .script .tag{ color:var(--sage); letter-spacing:.04em; }
+  footer{ background:#edf0e7; }
+  footer .fine{ margin-top:18px; }
+  :focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  @media(max-width:640px){
+    header .wrap{ padding:0 16px; }
+    .top-row{ padding:3px 2px; }
+    nav button{ padding:8px 10px; font-size:.8rem; }
+    .hero{ padding-top:53px; }
+    .hero:before{ left:-220px; }
+    .hero:after{ right:-130px; }
+    .cta{ margin:5px; }
+    .cta.ghost{ margin-left:5px; }
+    .steps{ grid-template-columns:1fr; }
+    .steps li{ min-height:0; }
+  }
 </style>
 </head>
 <body>
@@ -188,7 +261,7 @@
 <header>
   <div class="wrap">
     <div class="top-row">
-      <div class="logo"><svg class="logo-mark"><use href="#ico-logo"></use></svg><span><b>Control</b> Life</span></div>
+      <div class="logo"><img class="logo-mark" src="assets/logo.svg" alt=""><span><b>Control</b> Life</span></div>
       <button class="cta-small" data-goto="baixar">Baixar</button>
     </div>
     <nav id="nav">
@@ -214,9 +287,9 @@
       <div class="switch-demo">
         <div class="switch-row">
           <svg class="mascot active" id="mascotTension"><use href="#ico-tension"></use></svg>
-          <div class="switch" id="switchDemo" role="button" tabindex="0" aria-label="Alternar modo de descanso">
+          <button class="switch" id="switchDemo" type="button" aria-label="Ativar modo descanso" aria-pressed="false">
             <div class="knob" id="knob">💭</div>
-          </div>
+          </button>
           <svg class="mascot" id="mascotCalm"><use href="#ico-calm"></use></svg>
         </div>
         <div class="switch-label" id="switchLabel">Cabeça ainda no trabalho — <b>toque para desligar</b></div>
@@ -361,7 +434,7 @@
 
 <footer>
   <div class="wrap">
-    <div class="logo logo-lg"><svg class="logo-mark"><use href="#ico-logo"></use></svg><span><b>Control</b> Life</span></div>
+    <div class="logo logo-lg"><img class="logo-mark" src="assets/logo.svg" alt=""><span><b>Control</b> Life</span></div>
     <p class="fine">Missão 6 — Desligador de Cobranças · protótipo de apresentação</p>
   </div>
 </footer>
@@ -408,6 +481,8 @@
   const mCalm = document.getElementById('mascotCalm');
   function toggle(){
     const on = sw.classList.toggle('on');
+    sw.setAttribute('aria-pressed', String(on));
+    sw.setAttribute('aria-label', on ? 'Desativar modo descanso' : 'Ativar modo descanso');
     knob.textContent = on ? '🌙' : '💭';
     label.innerHTML = on
       ? 'Modo descanso <b>ativado</b>'
@@ -418,7 +493,6 @@
     }
   }
   sw.addEventListener('click', toggle);
-  sw.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
 </script>
 
 </body>

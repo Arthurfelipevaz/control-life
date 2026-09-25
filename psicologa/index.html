@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Control Life — desligue a cobrança, ligue o descanso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1A24;
+    --bg-soft:#152535;
+    --bg-soft2:#1B2E3F;
+    --ink:#EDEFE9;
+    --ink-dim:#9FB0AC;
+    --line:rgba(237,239,233,0.12);
+    --sage:#8FAE8B;
+    --gold:#D9A24B;
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html{ scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *{ box-sizing: border-box; }
+  html, body{ margin:0; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap{ max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  header{
+    position: sticky; top: 0; z-index: 10;
+    padding-top: calc(16px + env(safe-area-inset-top, 0px));
+    padding-bottom: 14px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  header .wrap{ display:flex; flex-direction:column; gap:14px; }
+  .top-row{ display:flex; align-items:center; justify-content:space-between; }
+  .logo{ font-family: var(--font-display); font-size: 1.15rem; display:flex; align-items:center; gap:9px; }
+  .logo b{ color: var(--sage); font-weight: 500; }
+  .logo-mark{ width: 30px; height: 30px; flex-shrink:0; }
+  .logo-lg{ font-size: 1.3rem; justify-content:center; }
+  .logo-lg .logo-mark{ width: 36px; height: 36px; }
+
+  .mascot{ display:block; }
+  .switch-row{ display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; }
+  .switch-row .mascot{ width: 78px; height: 78px; opacity: .35; transition: opacity .4s ease, transform .4s ease; }
+  .switch-row .mascot.active{ opacity: 1; transform: scale(1.06); }
+
+  .problem-layout{ display:flex; gap:26px; align-items:flex-start; flex-wrap:wrap; }
+  .problem-layout .mascot{ width: 104px; height: 104px; margin: 0 auto; flex-shrink:0; }
+  .problem-layout .text-col{ flex: 1 1 260px; min-width: 0; }
+
+  .quote-block .mascot{ width: 84px; height: 84px; margin: 0 auto 14px; }
+
+  .script .line{ display:flex; gap:14px; align-items:flex-start; }
+  .script .mascot{ width: 44px; height: 44px; flex-shrink:0; margin-top: 2px; }
+  .script .line-text{ flex:1; min-width:0; }
+  .cta-small{
+    padding: 8px 18px; border-radius: 999px; background: var(--gold);
+    color:#201404; font-weight:600; font-size:0.85rem; text-decoration:none; border:none; cursor:pointer;
+  }
+  nav{ display:flex; gap:4px; overflow-x:auto; padding-bottom: 2px; }
+  nav::-webkit-scrollbar{ display:none; }
+  nav button{
+    background:none; border:none; color: var(--ink-dim); font-family: var(--font-body);
+    font-size: 0.88rem; padding: 8px 12px; border-radius: 8px; cursor:pointer; white-space:nowrap;
+  }
+  nav button:hover{ color: var(--ink); }
+  nav button[aria-current="page"]{ color: var(--ink); background: var(--bg-soft); }
+
+  main{ min-height: 60vh; }
+  .page{ display:none; animation: fade .35s ease; }
+  .page.active{ display:block; }
+  @keyframes fade{ from{ opacity:0; transform: translateY(6px);} to{ opacity:1; transform:none; } }
+
+  .hero{ padding: 50px 0 36px; text-align:center; }
+  .kicker{ color: var(--ink-dim); font-size: 0.95rem; margin-bottom: 16px; }
+  h1{
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(2rem, 6vw, 2.9rem); line-height: 1.15;
+    margin: 0 0 18px; max-width: 15ch; margin-left:auto; margin-right:auto;
+  }
+  h2{ font-family: var(--font-display); font-weight:500; font-size: 1.6rem; margin: 0 0 10px; }
+  h2.section-title{ margin-bottom: 28px; }
+  .lede{ color: var(--ink-dim); font-size: 1.05rem; max-width: 42ch; margin: 0 auto 30px; }
+
+  .switch-demo{ display:flex; flex-direction:column; align-items:center; gap:14px; margin: 26px 0 34px; }
+  .switch{
+    width: 108px; height: 56px; border-radius: 999px;
+    background: var(--bg-soft); border: 1px solid var(--line);
+    position: relative; cursor: pointer; transition: background 0.4s ease;
+  }
+  .switch .knob{
+    position:absolute; top: 4px; left: 4px; width: 46px; height: 46px; border-radius: 50%;
+    background: var(--ink-dim); transition: transform 0.4s cubic-bezier(.4,0,.2,1), background 0.4s ease;
+    display:flex; align-items:center; justify-content:center; font-size: 19px;
+  }
+  .switch.on{ background: rgba(143,174,139,0.25); border-color: var(--sage); }
+  .switch.on .knob{ transform: translateX(52px); background: var(--sage); }
+  .switch-label{ font-size: 0.9rem; color: var(--ink-dim); min-height: 1.4em; }
+  .switch-label b{ color: var(--ink); font-weight:500; }
+
+  .cta{
+    display:inline-block; padding: 13px 30px; border-radius: 999px;
+    background: var(--gold); color: #201404; font-weight: 600; text-decoration:none;
+    font-size: 0.98rem; border: none; cursor:pointer;
+  }
+  .cta.ghost{ background: transparent; color: var(--ink); border: 1px solid var(--line); font-weight:500; margin-left: 12px; }
+
+  section.block{ padding: 46px 0; }
+
+  .steps{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:22px; }
+  .steps li{ display:flex; gap:16px; align-items:flex-start; }
+  .steps .n{ font-family: var(--font-display); color: var(--sage); font-size: 1.1rem; width: 28px; flex-shrink:0; }
+  .steps h3{ margin: 0 0 4px; font-size: 1rem; font-weight:600; }
+  .steps p{ margin:0; color: var(--ink-dim); font-size: 0.95rem; }
+
+  .cards{ display:grid; grid-template-columns: 1fr; gap:16px; }
+  @media(min-width:560px){ .cards{ grid-template-columns: 1fr 1fr; } }
+  .card{ background: var(--bg-soft); border:1px solid var(--line); border-radius: 14px; padding: 22px; }
+  .card h3{ margin:0 0 8px; font-size: 0.98rem; font-weight:600; }
+  .card p{ margin:0; color: var(--ink-dim); font-size: 0.92rem; }
+
+  .quote-block{ text-align:center; padding: 44px 24px; background: var(--bg-soft); border-radius: 16px; margin: 34px 0; }
+  .quote-block p{
+    font-family: var(--font-display); font-weight: 500; font-size: clamp(1.3rem, 4vw, 1.8rem);
+    line-height:1.3; max-width: 18ch; margin: 0 auto; color: var(--sage);
+  }
+
+  .problem-box{ background: var(--bg-soft); border-left: 3px solid var(--gold); border-radius: 4px; padding: 20px 24px; margin: 24px 0; }
+  .problem-box p{ margin:0; color: var(--ink); font-size: 0.98rem; }
+  .problem-box p + p{ margin-top: 10px; }
+
+  .script{ background: var(--bg-soft2); border-radius: 14px; padding: 26px 24px; margin-top: 18px; }
+  .script .line{ margin-bottom: 16px; }
+  .script .tag{ font-size: 0.78rem; text-transform: none; color: var(--sage); font-weight:600; display:block; margin-bottom: 3px; }
+  .script p{ margin:0; color: var(--ink-dim); font-size: 0.95rem; }
+  .script .speak{ color: var(--ink); }
+
+  footer{ padding: 44px 0 calc(44px + env(safe-area-inset-bottom, 0px)); text-align:center; border-top: 1px solid var(--line); }
+  footer .fine{ margin-top: 28px; color: var(--ink-dim); font-size: 0.82rem; }
+
+  @media (prefers-reduced-motion: reduce){
+    .switch, .switch .knob, .page{ transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="ico-logo" viewBox="0 0 40 40">
+    <circle cx="20" cy="20" r="18" fill="var(--bg-soft)" stroke="var(--line)"/>
+    <path d="M25 9 A11 11 0 1 0 25 31 A8 8 0 1 1 25 9 Z" fill="var(--gold)"/>
+  </symbol>
+  <symbol id="ico-tension" viewBox="0 0 160 160">
+    <circle cx="80" cy="92" r="46" fill="var(--ink-dim)"/>
+    <path d="M42 62 L52 32 L62 57 L72 27 L82 57 L92 27 L102 57 L112 32 L122 62" stroke="var(--ink-dim)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M56 80 L71 87" stroke="var(--bg)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M104 80 L89 87" stroke="var(--bg)" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="66" cy="94" r="4" fill="var(--bg)"/>
+    <circle cx="94" cy="94" r="4" fill="var(--bg)"/>
+    <path d="M66 114 Q80 104 94 114" stroke="var(--bg)" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M118 72 Q124 82 118 90 Q112 82 118 72 Z" fill="var(--gold)"/>
+    <rect x="16" y="42" width="18" height="12" rx="2" fill="var(--bg-soft2)" stroke="var(--line)"/>
+    <rect x="126" y="112" width="18" height="12" rx="2" fill="var(--bg-soft2)" stroke="var(--line)"/>
+  </symbol>
+  <symbol id="ico-calm" viewBox="0 0 160 160">
+    <circle cx="80" cy="92" r="46" fill="var(--sage)"/>
+    <path d="M61 90 Q66 96 71 90" stroke="var(--bg)" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M89 90 Q94 96 99 90" stroke="var(--bg)" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M66 108 Q80 118 94 108" stroke="var(--bg)" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M97 34 A14 14 0 1 0 102 54 A10 10 0 1 1 97 34 Z" fill="var(--gold)"/>
+    <circle cx="30" cy="62" r="4" fill="var(--bg-soft2)"/>
+    <circle cx="130" cy="76" r="3" fill="var(--bg-soft2)"/>
+    <circle cx="120" cy="42" r="2.5" fill="var(--bg-soft2)"/>
+  </symbol>
+</svg>
+
+<header>
+  <div class="wrap">
+    <div class="top-row">
+      <div class="logo"><svg class="logo-mark"><use href="#ico-logo"></use></svg><span><b>Control</b> Life</span></div>
+      <button class="cta-small" data-goto="baixar">Baixar</button>
+    </div>
+    <nav id="nav">
+      <button data-goto="inicio">Início</button>
+      <button data-goto="problema">O problema</button>
+      <button data-goto="funciona">Como funciona</button>
+      <button data-goto="diferencial">Diferencial</button>
+      <button data-goto="comercial">O comercial</button>
+      <button data-goto="baixar">Baixar</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- INÍCIO -->
+  <section class="page" id="page-inicio" data-page="inicio">
+    <div class="hero">
+      <div class="kicker">O Desligador de Cobranças</div>
+      <h1>Desligue a cobrança. Ligue o descanso.</h1>
+      <p class="lede">O expediente acabou, mas sua cabeça continua no trabalho. O Control Life é o aplicativo que te ajuda a encerrar o dia de verdade — e descansar sem culpa.</p>
+
+      <div class="switch-demo">
+        <div class="switch-row">
+          <svg class="mascot active" id="mascotTension"><use href="#ico-tension"></use></svg>
+          <div class="switch" id="switchDemo" role="button" tabindex="0" aria-label="Alternar modo de descanso">
+            <div class="knob" id="knob">💭</div>
+          </div>
+          <svg class="mascot" id="mascotCalm"><use href="#ico-calm"></use></svg>
+        </div>
+        <div class="switch-label" id="switchLabel">Cabeça ainda no trabalho — <b>toque para desligar</b></div>
+      </div>
+
+      <a class="cta" data-goto="baixar" href="#baixar">Baixar o aplicativo</a>
+      <a class="cta ghost" data-goto="funciona" href="#funciona">Ver como funciona</a>
+    </div>
+
+    <div class="quote-block">
+      <svg class="mascot"><use href="#ico-calm"></use></svg>
+      <p>Controle sua rotina. Controle sua vida.</p>
+    </div>
+  </section>
+
+  <!-- PROBLEMA -->
+  <section class="page" id="page-problema" data-page="problema">
+    <section class="block">
+      <h2 class="section-title">O problema que resolvemos</h2>
+      <div class="problem-layout">
+        <svg class="mascot"><use href="#ico-tension"></use></svg>
+        <div class="text-col">
+          <div class="problem-box">
+            <p>O expediente acabou ou uma tarefa foi concluída, mas sua cabeça continua repassando metas, pendências e possíveis erros.</p>
+            <p>Mesmo durante o descanso, você sente que deveria estar produzindo ou resolvendo alguma coisa.</p>
+          </div>
+          <p class="lede" style="margin:26px 0 0; max-width:none; text-align:left;">É a necessidade que o Control Life existe para atender: ajudar a encerrar o dia de trabalho e descansar sem culpa. Não é sobre produtividade — é sobre saber parar.</p>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section class="page" id="page-funciona" data-page="funciona">
+    <section class="block">
+      <h2 class="section-title">Como funciona</h2>
+      <ul class="steps">
+        <li>
+          <span class="n">01</span>
+          <div>
+            <h3>É um aplicativo</h3>
+            <p>Control Life vive no seu celular, pronto para o momento em que o expediente termina.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">02</span>
+          <div>
+            <h3>Baixe e utilize</h3>
+            <p>Simples assim: baixar o aplicativo e utilizá-lo. Sem configuração complicada, sem curva de aprendizado.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">03</span>
+          <div>
+            <h3>Use quando a rotina virar bagunça</h3>
+            <p>Naqueles dias em que a rotina fica desorganizada — e a sensação de tarefa pendente não te larga mesmo fora do horário de trabalho.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">04</span>
+          <div>
+            <h3>Recupere a organização</h3>
+            <p>Depois de usar, você consegue colocar a rotina diária em ordem de novo — e desligar a cabeça sem culpa.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </section>
+
+  <!-- DIFERENCIAL -->
+  <section class="page" id="page-diferencial" data-page="diferencial">
+    <section class="block">
+      <h2 class="section-title">Por que Control Life</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Fácil de usar</h3>
+          <p>Sem curva de aprendizado. Você abre, usa, e volta pra sua vida.</p>
+        </div>
+        <div class="card">
+          <h3>Facilita o dia a dia</h3>
+          <p>Feito para o momento exato em que o cansaço mental aparece — no fim do expediente.</p>
+        </div>
+        <div class="card">
+          <h3>Melhora a qualidade de vida</h3>
+          <p>Menos cobrança mental fora do horário de trabalho, mais presença no resto do seu dia.</p>
+        </div>
+        <div class="card">
+          <h3>Feito pra descansar sem culpa</h3>
+          <p>Resolve exatamente a necessidade que ninguém mais resolve: ajudar você a encerrar o dia de verdade.</p>
+        </div>
+      </div>
+      <div class="quote-block">
+        <svg class="mascot"><use href="#ico-calm"></use></svg>
+        <p>Controle sua rotina. Controle sua vida.</p>
+      </div>
+    </section>
+  </section>
+
+  <!-- COMERCIAL -->
+  <section class="page" id="page-comercial" data-page="comercial">
+    <section class="block">
+      <h2 class="section-title">O comercial (até 2 minutos)</h2>
+      <p class="lede" style="margin:0 0 8px; max-width:none; text-align:left;">Formato: entrevista curta de rua. Um repórter aborda alguém visivelmente cansado, ainda "no automático" do trabalho.</p>
+      <div class="script">
+        <div class="line">
+          <span class="tag">CENA 1 — RUA, FIM DE TARDE</span>
+          <p class="speak">Repórter: "Com licença! O expediente já acabou há uma hora... por que você ainda está olhando o celular com essa cara de preocupado?"</p>
+        </div>
+        <div class="line">
+          <svg class="mascot"><use href="#ico-tension"></use></svg>
+          <div class="line-text">
+            <span class="tag">CENA 2 — A PESSOA</span>
+            <p class="speak">Pessoa: "Ah, é que fica tudo passando na minha cabeça... as metas, o que eu esqueci de responder..."</p>
+          </div>
+        </div>
+        <div class="line">
+          <svg class="mascot"><use href="#ico-calm"></use></svg>
+          <div class="line-text">
+            <span class="tag">CENA 3 — A DEMONSTRAÇÃO</span>
+            <p class="speak">Repórter: "Já ouviu falar no Control Life?" — mostra o app na tela, aperta o botão de desligar.</p>
+            <p>Pessoa solta os ombros, respira, sorri.</p>
+          </div>
+        </div>
+        <div class="line">
+          <span class="tag">CENA 4 — FECHO</span>
+          <p class="speak">Repórter olha pra câmera: "Control Life. Controle sua rotina. Controle sua vida."</p>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- BAIXAR -->
+  <section class="page" id="page-baixar" data-page="baixar">
+    <section class="block" style="text-align:center;">
+      <h2>Pronto pra desligar a cobrança?</h2>
+      <p class="lede">Control Life ainda está em desenvolvimento — este é o protótipo do app que vamos apresentar.</p>
+      <a class="cta" href="#">Baixar o aplicativo</a>
+    </section>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="logo logo-lg"><svg class="logo-mark"><use href="#ico-logo"></use></svg><span><b>Control</b> Life</span></div>
+    <p class="fine">Missão 6 — Desligador de Cobranças · protótipo de apresentação</p>
+  </div>
+</footer>
+
+<script>
+  // page router
+  const pages = Array.from(document.querySelectorAll('.page'));
+  const navButtons = Array.from(document.querySelectorAll('[data-goto]'));
+
+  function showPage(id, updateHash){
+    let found = false;
+    pages.forEach(p => {
+      const match = p.dataset.page === id;
+      p.classList.toggle('active', match);
+      if(match) found = true;
+    });
+    if(!found){ pages[0].classList.add('active'); id = pages[0].dataset.page; }
+    document.querySelectorAll('#nav button').forEach(b => {
+      b.toggleAttribute('aria-current', false);
+      if(b.dataset.goto === id) b.setAttribute('aria-current','page');
+    });
+    if(updateHash !== false) history.replaceState(null, '', '#' + id);
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      showPage(btn.dataset.goto);
+    });
+  });
+
+  window.addEventListener('hashchange', () => {
+    showPage(location.hash.replace('#',''));
+  });
+
+  showPage(location.hash ? location.hash.replace('#','') : 'inicio', false);
+
+  // switch demo
+  const sw = document.getElementById('switchDemo');
+  const knob = document.getElementById('knob');
+  const label = document.getElementById('switchLabel');
+  const mTension = document.getElementById('mascotTension');
+  const mCalm = document.getElementById('mascotCalm');
+  function toggle(){
+    const on = sw.classList.toggle('on');
+    knob.textContent = on ? '🌙' : '💭';
+    label.innerHTML = on
+      ? 'Modo descanso <b>ativado</b>'
+      : 'Cabeça ainda no trabalho — <b>toque para desligar</b>';
+    if(mTension && mCalm){
+      mTension.classList.toggle('active', !on);
+      mCalm.classList.toggle('active', on);
+    }
+  }
+  sw.addEventListener('click', toggle);
+  sw.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
+</script>
+
+</body>
+</html>
